@@ -12,8 +12,8 @@ namespace WietHuts {
         public static bool[] isLibSigned;
         public static bool[] isBookScanned;
 
-        public static int totalBooks;
-        public static float avgBooks;
+        public static int totalBooks, totalFreq;
+        public static float avgBooks, avgFreq;
 
         static void Main(string[] args) {
             ReadInput();
@@ -34,7 +34,7 @@ namespace WietHuts {
 
             libList = new List<Library>();
 
-            totalBooks = 0;
+            totalBooks = 0; totalFreq = 0;
             // Info per library
             for (int i = 0; i < libraries; i++) {
                 string[] libInfo = Console.ReadLine().Split(" ");
@@ -91,13 +91,16 @@ namespace WietHuts {
         static void AddScore(Library l) {
             int DAYSCORESCALE = 10;
             int BOOKAMOUNTSCALE = 10;
+            int FREQUENCYSCALE = 5;
 
             float dagscore = (days - l.signUpProc) / (float)days;
             dagscore *= DAYSCORESCALE;
-            float bookscore = (l.bookAmount - avgBooks) / (float)avgBooks;
+            float bookscore = (l.bookAmount - avgBooks) / avgBooks;
             bookscore *= BOOKAMOUNTSCALE;
+            float freqscore = (l.shipPerDay - avgFreq) / avgFreq;
+            freqscore *= FREQUENCYSCALE;
 
-            float score = dagscore + bookscore;
+            float score = dagscore + bookscore + freqscore;
             l.score = score;
         }
 
