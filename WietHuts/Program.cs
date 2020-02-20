@@ -40,11 +40,9 @@ namespace WietHuts {
                 int shipPerDay = int.Parse(libInfo[2]);
 
                 int[] books = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
-                for (int j = 0; j < bookAmount; j++)
-                {
-
-                }
-                Stack<int> bookInLib = new Stack<int>(books);
+                int[] sortedBooks = books.OrderBy(x => bookScores[x]).ToArray();
+                Stack<int> bookInLib = new Stack<int>(sortedBooks);
+                int popped = bookInLib.Pop();
 
                 Library lib = new Library { index = i, bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
                 libList.Add(lib);
