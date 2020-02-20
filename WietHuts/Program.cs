@@ -10,6 +10,8 @@ namespace WietHuts {
         public static int[] bookScores;
         public static List<Library> libList;
 
+        public static int totalBooks, avgBooks;
+
         static void Main(string[] args) {
             ReadInput();
             DoThings();
@@ -29,6 +31,7 @@ namespace WietHuts {
 
             libList = new List<Library>();
 
+            totalBooks = 0;
             // Info per library
             for (int i = 0; i < libraries; i++) {
                 string[] libInfo = Console.ReadLine().Split(" ");
@@ -41,11 +44,16 @@ namespace WietHuts {
 
                 Library lib = new Library { bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
                 libList.Add(lib);
+
+                totalBooks += bookAmount;
             }
+            avgBooks = totalBooks / libraries;
         }
 
         static void DoThings() {
-
+            for (int i = 0; i < libraries; i++) {
+                
+            }
         }
 
         static void WriteOutput() {
@@ -69,12 +77,17 @@ namespace WietHuts {
             output.Close();
         }
 
-        private Library Score(Library l) {
-            int scoregetal;
-            scoregetal = days - l.signUpProc;
-            //Bereken score
-            l.score = scoregetal;
-            return l;
+        static void AddScore(Library l) {
+            int DAYSCORESCALE = 10;
+            int BOOKAMOUNTSCALE = 10;
+
+            float dagscore = (days - l.signUpProc) / days;
+            dagscore *= DAYSCORESCALE;
+            float bookscore = (l.bookAmount - avgBooks) / avgBooks;
+            bookscore *= BOOKAMOUNTSCALE;
+
+            float score = dagscore + bookscore;
+            l.score = score;
         }
 
     }
@@ -84,7 +97,7 @@ namespace WietHuts {
         public int signUpProc;
         public int shipPerDay;
         public int[] bookInLib;
-        public int score;
+        public float score;
     }
 
 }
