@@ -4,6 +4,12 @@ using System.Linq;
 
 namespace WietHuts {
     class Program {
+
+        public static int books, libraries, days;
+        public static int[] bookScores;
+        public static List<Library> libList;
+
+
         static void Main(string[] args) {
             ReadInput();
             DoThings();
@@ -13,18 +19,15 @@ namespace WietHuts {
         static void ReadInput() {
             // Get the info
             string[] info = Console.ReadLine().Split(" ");
-            int books = int.Parse(info[0]);
-            int libraries = int.Parse(info[1]);
-            int days = int.Parse(info[2]);
+            books = int.Parse(info[0]);
+            libraries = int.Parse(info[1]);
+            days = int.Parse(info[2]);
 
             // Get book scores
             string bookScoreString = Console.ReadLine();
-            string[] splitScores = bookScoreString.Split(" ");
-            int[] bookScores = new int[books];
-            for (int i = 0; i < books; i++)
-                bookScores[i] = int.Parse(splitScores[i]);
+            bookScores = bookScoreString.Split(" ").Select(x => int.Parse(x)).ToArray();
 
-            List<Library> libList = new List<Library>();
+            libList = new List<Library>();
 
             // Info per library
             for (int i = 0; i < libraries; i++) {
