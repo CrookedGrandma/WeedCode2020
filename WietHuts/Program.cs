@@ -49,7 +49,17 @@ namespace WietHuts {
         }
 
         static void WriteOutput() {
+            // Amount of libraries
+            Console.WriteLine(libraries);
 
+            for (int i = 0; i < libraries; i++)
+            {
+                // Library ID + amount of signups
+                Console.WriteLine();
+
+                // Order of books to be send
+                Console.WriteLine();
+            }
         }
 
     }
