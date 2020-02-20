@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WietHuts {
@@ -23,14 +24,20 @@ namespace WietHuts {
             for (int i = 0; i < books; i++)
                 bookScores[i] = int.Parse(splitScores[i]);
 
+            List<Library> libList = new List<Library>();
+
             // Info per library
             for (int i = 0; i < libraries; i++) {
                 string[] libInfo = Console.ReadLine().Split(" ");
-                int[] bookInLib = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
 
                 int bookAmount = int.Parse(libInfo[0]);
                 int signUpProc = int.Parse(libInfo[1]);
                 int shipPerDay = int.Parse(libInfo[2]);
+
+                int[] bookInLib = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
+
+                Library lib = new Library { bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
+                libList.Add(lib);
             }
         }
 
@@ -43,4 +50,12 @@ namespace WietHuts {
         }
 
     }
+
+    struct Library {
+        public int bookAmount;
+        public int signUpProc;
+        public int shipPerDay;
+        public int[] bookInLib;
+    }
+
 }
