@@ -126,13 +126,13 @@ namespace WietHuts {
         }
 
         static void AddScore(Library l) {
-            int DAYSCORESCALE = 10;
+            int DAYSCORESCALE = 40;
             int BOOKAMOUNTSCALE = 10;
-            int FREQUENCYSCALE = 5;
+            int FREQUENCYSCALE = 10;
             int BOOKRATIOSCALE = 15;
 
-            float dagscore = (days - l.signUpProc) / days;
-            //float dagscore = (l.signUpProc - avgSign) / avgSign;
+            //float dagscore = (days - l.signUpProc) / days;
+            float dagscore = (avgSign - l.signUpProc) / avgSign;
             dagscore *= DAYSCORESCALE;
             float bookscore = (l.bookAmount - avgBooks) / avgBooks;
             bookscore *= BOOKAMOUNTSCALE;
