@@ -12,8 +12,8 @@ namespace WietHuts {
         public static bool[] isLibSigned;
         public static bool[] isBookScanned;
 
-        public static int totalBooks, totalFreq;
-        public static float avgBooks, avgFreq;
+        public static int totalSign, totalBooks, totalFreq;
+        public static float avgSign, avgBooks, avgFreq;
 
         static void Main(string[] args) {
             ReadInput();
@@ -34,7 +34,7 @@ namespace WietHuts {
 
             libList = new List<Library>();
 
-            totalBooks = 0; totalFreq = 0;
+            totalSign = 0; totalBooks = 0; totalFreq = 0;
             // Info per library
             for (int i = 0; i < libraries; i++) {
                 string[] libInfo = Console.ReadLine().Split(" ");
@@ -46,14 +46,15 @@ namespace WietHuts {
                 int[] books = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
                 int[] sortedBooks = books.OrderBy(x => bookScores[x]).ToArray();
                 Stack<int> bookInLib = new Stack<int>(sortedBooks);
-                int popped = bookInLib.Pop();
 
                 Library lib = new Library { index = i, bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
                 libList.Add(lib);
 
+                totalSign += signUpProc;
                 totalBooks += bookAmount;
                 totalFreq += shipPerDay;
             }
+            avgSign = totalSign / (float)libraries;
             avgBooks = totalBooks / (float)libraries;
             avgFreq = totalFreq / (float)libraries;
         }
@@ -62,7 +63,8 @@ namespace WietHuts {
             for (int i = 0; i < libraries; i++) {
                 AddScore(libList[i]);
             }
-            int breakpoint = 1;
+            libList = libList.OrderBy(x => -x.score).ToList();
+            //int breakpoint = 1;
             /*for(int day = 0; day < days; day++)
                 foreach (Library lib in libList)
                     CheckBooks(lib, day);*/
@@ -74,14 +76,15 @@ namespace WietHuts {
             output.WriteLine(libraries);
 
             for (int i = 0; i < libraries; i++) {
+                Library l = libList[i];
                 // Library ID + amount of signups
-                output.Write(i);
+                output.Write(l.index);
                 output.Write(" ");
-                output.WriteLine(libList[i].bookAmount);
+                output.WriteLine(l.bookAmount);
 
                 // Order of books to be send
-                for (int j = 0; j < libList[i].bookAmount; j++) {
-                    output.Write(libList[i].bookInLib.Pop());
+                for (int j = 0; j < l.bookAmount; j++) {
+                    output.Write(l.bookInLib.Pop());
                     output.Write(" ");
                 }
                 output.WriteLine();
@@ -94,7 +97,8 @@ namespace WietHuts {
             int BOOKAMOUNTSCALE = 10;
             int FREQUENCYSCALE = 5;
 
-            float dagscore = (days - l.signUpProc) / (float)days;
+            float dagscore = (days - l.signUpProc) / days;
+            //float dagscore = (l.signUpProc - avgSign) / avgSign;
             dagscore *= DAYSCORESCALE;
             float bookscore = (l.bookAmount - avgBooks) / avgBooks;
             bookscore *= BOOKAMOUNTSCALE;
