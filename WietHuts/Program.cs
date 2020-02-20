@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace WietHuts {
     class Program {
@@ -9,8 +10,11 @@ namespace WietHuts {
         public static int[] bookScores;
         public static List<Library> libList;
 
+        public static StreamWriter output;
 
         static void Main(string[] args) {
+            output = new StreamWriter("../../../output.txt");
+
             ReadInput();
             DoThings();
             WriteOutput();
@@ -50,15 +54,15 @@ namespace WietHuts {
 
         static void WriteOutput() {
             // Amount of libraries
-            Console.WriteLine(libraries);
+            output.WriteLine(libraries);
 
             for (int i = 0; i < libraries; i++)
             {
                 // Library ID + amount of signups
-                Console.WriteLine();
+                output.WriteLine();
 
                 // Order of books to be send
-                Console.WriteLine();
+                output.WriteLine();
             }
         }
 
