@@ -12,6 +12,11 @@ namespace WietHuts {
         public static bool[] isLibSigned;
         public static bool[] isBookScanned;
 
+        // singing libs
+        public static int signingLib;
+        public static int signingDaysRemaining;
+        public static Stack<Library> singingLibs;
+
         static void Main(string[] args) {
             ReadInput();
             DoThings();
@@ -31,6 +36,12 @@ namespace WietHuts {
 
             libList = new List<Library>();
 
+            // xxx
+            signingLib = -1;
+            signingDaysRemaining = 0;
+            isLibSigned = new bool[libraries];
+            isBookScanned = new bool[books];
+
             // Info per library
             for (int i = 0; i < libraries; i++) {
                 string[] libInfo = Console.ReadLine().Split(" ");
@@ -42,17 +53,25 @@ namespace WietHuts {
                 int[] books = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
                 int[] sortedBooks = books.OrderBy(x => bookScores[x]).ToArray();
                 Stack<int> bookInLib = new Stack<int>(sortedBooks);
-                int popped = bookInLib.Pop();
 
-                Library lib = new Library { index = i, bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
+                Library lib = new Library { index = i, bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib, booksToSend = new List<int>() };
                 libList.Add(lib);
             }
+
+            singingLibs = new Stack<Library>(libList);
         }
 
         static void DoThings() {
             for(int day = 0; day < days; day++)
+            {
+                SignLibraries();
+
                 foreach (Library lib in libList)
+                {
                     CheckBooks(lib, day);
+                }
+            }
+                
         }
 
         static void WriteOutput() {
@@ -64,11 +83,11 @@ namespace WietHuts {
                 // Library ID + amount of signups
                 output.Write(i);
                 output.Write(" ");
-                output.WriteLine(libList[i].bookAmount);
+                output.WriteLine(libList[i].booksToSend.Count);
 
                 // Order of books to be send
-                for (int j = 0; j < libList[i].bookAmount; j++) {
-                    output.Write(libList[i].bookInLib.Pop());
+                for (int j = 0; j < libList[i].booksToSend.Count; j++) {
+                    output.Write(libList[i].booksToSend[j]);
                     output.Write(" ");
                 }
                 output.WriteLine();
@@ -88,15 +107,34 @@ namespace WietHuts {
         {
             if (isLibSigned[lib.index]) {
                 // What books can we sign
-                for(int i = 0; i < lib.shipPerDay; i++)
+                for(int i = 0; i < lib.shipPerDay && lib.bookInLib.Count > 0; )
                 {
-                    //if()
+                    int book = lib.bookInLib.Pop();
+                    if (!isBookScanned[book]) {
+                        isBookScanned[book] = true;
+                        i++;
+                        lib.booksToSend.Add(book);
+                    }
                 }
-            } else {
-
             }
         }
 
+        private static void SignLibraries()
+        {
+            if (signingDaysRemaining == 0) {
+                if (signingLib >= 0)
+                    isLibSigned[signingLib] = true;
+
+                if (singingLibs.Count > 0)
+                {
+                    Library lib = singingLibs.Pop();
+                    signingLib = lib.index;
+                    signingDaysRemaining = lib.signUpProc;
+                }
+            }
+
+            signingDaysRemaining--;
+        }
     }
 
     class Library {
@@ -107,7 +145,7 @@ namespace WietHuts {
         public Stack<int> bookInLib;
         public int score;
 
-        public int[] booksToSend;
+        public List<int> booksToSend;
     }
 
 }
