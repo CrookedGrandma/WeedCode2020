@@ -14,6 +14,7 @@ namespace WietHuts {
 
         public static int totalSign, totalBooks, totalFreq;
         public static float avgSign, avgBooks, avgFreq;
+        public static float totalBookRatio, avgBookRatio;
 
         static void Main(string[] args) {
             ReadInput();
@@ -34,6 +35,7 @@ namespace WietHuts {
 
             libList = new List<Library>();
 
+            totalBookRatio = 0;
             totalSign = 0; totalBooks = 0; totalFreq = 0;
             // Info per library
             for (int i = 0; i < libraries; i++) {
@@ -53,10 +55,13 @@ namespace WietHuts {
                 totalSign += signUpProc;
                 totalBooks += bookAmount;
                 totalFreq += shipPerDay;
+
+                totalBookRatio += bookAmount / shipPerDay;
             }
             avgSign = totalSign / (float)libraries;
             avgBooks = totalBooks / (float)libraries;
             avgFreq = totalFreq / (float)libraries;
+            avgBookRatio = totalBookRatio / (float)libraries;
         }
 
         static void DoThings() {
@@ -96,6 +101,7 @@ namespace WietHuts {
             int DAYSCORESCALE = 10;
             int BOOKAMOUNTSCALE = 10;
             int FREQUENCYSCALE = 5;
+            int BOOKRATIOSCALE = 15;
 
             float dagscore = (days - l.signUpProc) / days;
             //float dagscore = (l.signUpProc - avgSign) / avgSign;
@@ -104,6 +110,8 @@ namespace WietHuts {
             bookscore *= BOOKAMOUNTSCALE;
             float freqscore = (l.shipPerDay - avgFreq) / avgFreq;
             freqscore *= FREQUENCYSCALE;
+            /*float ratioscore = (l.bookAmount / l.shipPerDay - avgBookRatio) / avgBookRatio;
+            ratioscore *= BOOKRATIOSCALE;*/
 
             float score = dagscore + bookscore + freqscore;
             l.score = score;
