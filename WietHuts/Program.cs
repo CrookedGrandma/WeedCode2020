@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -12,7 +12,8 @@ namespace WietHuts {
         public static bool[] isLibSigned;
         public static bool[] isBookScanned;
 
-        public static int totalBooks, avgBooks;
+        public static int totalBooks;
+        public static float avgBooks;
 
         static void Main(string[] args) {
             ReadInput();
@@ -54,12 +55,12 @@ namespace WietHuts {
 
                 totalBooks += bookAmount;
             }
-            avgBooks = totalBooks / libraries;
+            avgBooks = totalBooks / (float)libraries;
         }
 
         static void DoThings() {
             for (int i = 0; i < libraries; i++) {
-                
+                AddScore(libList[i]);
             }
             for(int day = 0; day < days; day++)
                 foreach (Library lib in libList)
@@ -91,9 +92,9 @@ namespace WietHuts {
             int DAYSCORESCALE = 10;
             int BOOKAMOUNTSCALE = 10;
 
-            float dagscore = (days - l.signUpProc) / days;
+            float dagscore = (days - l.signUpProc) / (float)days;
             dagscore *= DAYSCORESCALE;
-            float bookscore = (l.bookAmount - avgBooks) / avgBooks;
+            float bookscore = (l.bookAmount - avgBooks) / (float)avgBooks;
             bookscore *= BOOKAMOUNTSCALE;
 
             float score = dagscore + bookscore;
