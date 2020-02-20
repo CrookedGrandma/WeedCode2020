@@ -61,7 +61,7 @@ namespace WietHuts {
 
                 // Order of books to be send
                 for (int j = 0; j < libList[i].bookAmount; j++) {
-                    output.Write(bookScores[libList[i].bookInLib[j]]);
+                    output.Write(libList[i].bookInLib[j]);
                     output.Write(" ");
                 }
                 output.WriteLine();
