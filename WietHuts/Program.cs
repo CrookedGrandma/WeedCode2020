@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -52,17 +52,20 @@ namespace WietHuts {
                 libList.Add(lib);
 
                 totalBooks += bookAmount;
+                totalFreq += shipPerDay;
             }
             avgBooks = totalBooks / (float)libraries;
+            avgFreq = totalFreq / (float)libraries;
         }
 
         static void DoThings() {
             for (int i = 0; i < libraries; i++) {
                 AddScore(libList[i]);
             }
-            for(int day = 0; day < days; day++)
+            int breakpoint = 1;
+            /*for(int day = 0; day < days; day++)
                 foreach (Library lib in libList)
-                    CheckBooks(lib, day);
+                    CheckBooks(lib, day);*/
         }
 
         static void WriteOutput() {
