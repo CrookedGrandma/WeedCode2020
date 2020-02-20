@@ -9,6 +9,8 @@ namespace WietHuts {
         public static int books, libraries, days;
         public static int[] bookScores;
         public static List<Library> libList;
+        public static bool[] isLibSigned;
+        public static bool[] isBookScanned;
 
         static void Main(string[] args) {
             ReadInput();
@@ -37,15 +39,22 @@ namespace WietHuts {
                 int signUpProc = int.Parse(libInfo[1]);
                 int shipPerDay = int.Parse(libInfo[2]);
 
-                int[] bookInLib = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
+                int[] books = Console.ReadLine().Split(" ").Select(x => int.Parse(x)).ToArray();
+                for (int j = 0; j < bookAmount; j++)
+                {
 
-                Library lib = new Library { bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
+                }
+                Stack<int> bookInLib = new Stack<int>(books);
+
+                Library lib = new Library { index = i, bookAmount = bookAmount, signUpProc = signUpProc, shipPerDay = shipPerDay, bookInLib = bookInLib };
                 libList.Add(lib);
             }
         }
 
         static void DoThings() {
-
+            for(int day = 0; day < days; day++)
+                foreach (Library lib in libList)
+                    CheckBooks(lib, day);
         }
 
         static void WriteOutput() {
@@ -61,7 +70,7 @@ namespace WietHuts {
 
                 // Order of books to be send
                 for (int j = 0; j < libList[i].bookAmount; j++) {
-                    output.Write(libList[i].bookInLib[j]);
+                    output.Write(libList[i].bookInLib.Pop());
                     output.Write(" ");
                 }
                 output.WriteLine();
@@ -77,14 +86,30 @@ namespace WietHuts {
             return l;
         }
 
+        private static void CheckBooks(Library lib, int day)
+        {
+            if (isLibSigned[lib.index]) {
+                // What books can we sign
+                for(int i = 0; i < lib.shipPerDay; i++)
+                {
+                    //if()
+                }
+            } else {
+
+            }
+        }
+
     }
 
-    struct Library {
+    class Library {
+        public int index;
         public int bookAmount;
         public int signUpProc;
         public int shipPerDay;
-        public int[] bookInLib;
+        public Stack<int> bookInLib;
         public int score;
+
+        public int[] booksToSend;
     }
 
 }
