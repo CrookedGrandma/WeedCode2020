@@ -10,11 +10,7 @@ namespace WietHuts {
         public static int[] bookScores;
         public static List<Library> libList;
 
-        public static StreamWriter output;
-
         static void Main(string[] args) {
-            output = new StreamWriter("../../../output.txt");
-
             ReadInput();
             DoThings();
             WriteOutput();
@@ -53,17 +49,24 @@ namespace WietHuts {
         }
 
         static void WriteOutput() {
+            StreamWriter output = new StreamWriter("../../../output.txt");
             // Amount of libraries
             output.WriteLine(libraries);
 
-            for (int i = 0; i < libraries; i++)
-            {
+            for (int i = 0; i < libraries; i++) {
                 // Library ID + amount of signups
-                output.WriteLine();
+                output.Write(i);
+                output.Write(" ");
+                output.WriteLine(libList[i].bookAmount);
 
                 // Order of books to be send
+                for (int j = 0; j < libList[i].bookAmount; j++) {
+                    output.Write(bookScores[libList[i].bookInLib[j]]);
+                    output.Write(" ");
+                }
                 output.WriteLine();
             }
+            output.Close();
         }
 
     }
